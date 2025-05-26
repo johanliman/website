@@ -1,21 +1,32 @@
 ---
 layout: page
 title: About
-nav-include: true
-
-nav-order: 5
 permalink: /about/
 ---
 
-This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](https://jekyllrb.com/)
+# About Me
 
-You can find the source code for Minima at GitHub:
-[jekyll][jekyll-organization] /
-[minima](https://github.com/jekyll/minima)
+Hi, I'm **Johan Liman**, a computer science student and former industrial engineer with a passion for problem-solving, software development, and helping others learn. I bring a unique blend of technical and business experience, having worked in education, marketing, programming, and supply chain coordination.
 
-You can find the source code for Jekyll at GitHub:
-[jekyll][jekyll-organization] /
-[jekyll](https://github.com/jekyll/jekyll)
+I'm currently pursuing an **Associate’s Degree in Computer Science** at Chaffey College (expected May 2025), after previously earning a **Bachelor’s Degree in Industrial Engineering** from the University of North Sumatera, Indonesia.
 
+---
 
-[jekyll-organization]: https://github.com/jekyll
+## 🛠️ Skills
+
+- **Programming Languages:** Python, JavaScript  
+- **Web Development:** HTML/CSS  
+- **Tools:** Git, Postman  
+
+---
+
+## 📍 Location
+
+Chino Hills, California (originally from Indonesia)
+
+---
+
+## 📬 Contact
+
+- 📧 [johanliman@gmail.com](mailto:johanliman@gmail.com)  
+- 📱 (909) 325-0371  

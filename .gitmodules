@@ -1,6 +1,0 @@
-[submodule "website"]
-	path = website
-	url = https://github.com/johanliman/website
-[submodule "Website"]
-	path = Website
-	url = https://github.com/johanliman/website

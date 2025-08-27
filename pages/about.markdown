@@ -1,32 +1,57 @@
 ---
 layout: page
-title: About
+title: About Me
 permalink: /about/
 ---
 
-# About Me
+# Johan Liman
 
-Hi, I'm **Johan Liman**, a computer science student and former industrial engineer with a passion for problem-solving, software development, and helping others learn. I bring a unique blend of technical and business experience, having worked in education, marketing, programming, and supply chain coordination.
-
-I'm currently pursuing an **Associate’s Degree in Computer Science** at Chaffey College (expected May 2025), after previously earning a **Bachelor’s Degree in Industrial Engineering** from the University of North Sumatera, Indonesia.
-
----
-
-## 🛠️ Skills
-
-- **Programming Languages:** Python, JavaScript  
-- **Web Development:** HTML/CSS  
-- **Tools:** Git, Postman  
+<p style="text-align: justify;">
+Passionate computer science student and former industrial engineer with expertise in problem-solving, software development, and educational support. I combine technical proficiency with business acumen, drawing from diverse experience across education, marketing, programming, and supply chain coordination.
+</p>
 
 ---
 
-## 📍 Location
+<h2 style="font-size: 1.75rem; margin-top: 20px;">Education</h2>
 
-Chino Hills, California (originally from Indonesia)
+**Master's Degree in Computer Science** *(Expected Spring 2027)*  
+Cal State Fullerton, California
+
+**Associate's Degree in Computer Science** *(Completed)*  
+Chaffey College, California
+
+**Bachelor's Degree in Industrial Engineering** *(Completed)*  
+University of North Sumatera, Indonesia
 
 ---
 
-## 📬 Contact
+<h2 style="font-size: 1.75rem; margin-top: 20px;">Technical Skills</h2>
 
-- 📧 [johanliman@gmail.com](mailto:johanliman@gmail.com)  
-- 📱 (909) 325-0371  
+**Programming Languages**  
+Python, JavaScript, Swift, React Native
+
+**Web Development**  
+HTML, CSS
+
+**Development Tools**  
+Git, Postman
+
+**Core Competencies**  
+Problem-solving, Software development, Educational support, Supply chain coordination
+
+---
+
+<h2 style="font-size: 1.75rem; margin-top: 20px;">Location</h2>
+
+**Current:** Chino Hills, California  
+**Origin:** Indonesia
+
+---
+
+<h2 style="font-size: 1.75rem; margin-top: 20px;">Contact Information</h2>
+
+**Email:** johanliman@gmail.com  
+**Phone:** (909) 325-0371
+
+
+---

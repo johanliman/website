@@ -4,7 +4,6 @@ title: About Me
 permalink: /about/
 ---
 
-# Johan Liman
 
 <p style="text-align: justify;">
 Passionate computer science student and former industrial engineer with expertise in problem-solving, software development, and educational support. I combine technical proficiency with business acumen, drawing from diverse experience across education, marketing, programming, and supply chain coordination.
@@ -53,5 +52,3 @@ Problem-solving, Software development, Educational support, Supply chain coordin
 **Email:** johanliman@gmail.com  
 **Phone:** (909) 325-0371
 
-
----

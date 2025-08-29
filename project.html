@@ -1,15 +1,25 @@
+---
+layout: default
+title: My Apps
+---
+
+<div class="projects-page">
+  <h1 class="page-heading" style="text-align: left;">My Apps</h1>
+  
+  <div class="projects-grid">
+        {% include projects-list.html %}
+  </div>
+</div>
+
 <footer class="site-footer h-card">
   <data class="u-url" href="/"></data>
 
   <div class="wrapper">
-
-
     <div class="footer-col-wrapper">
       <div class="footer-col footer-col-1">
         <ul class="contact-list">
           <li class="p-name">Mail me</li>
-          <li><a href="mailto:johanliman@gmail.com">johanliman@gmail.com</a></li>
-
+          <li><a class="u-email" href="mailto:johanliman@gmail.com">johanliman@gmail.com</a></li>
         </ul>
       </div>
 
@@ -29,10 +39,9 @@
                 <use xlink:href="/assets/minima-social-icons.svg#linkedin"></use>
               </svg>
               <span class="username">johanliman</span>
-            </a>
-          </li>
+            </li>
         </ul>
       </div>
     </div>
   </div>
-</footer> 
+</footer>

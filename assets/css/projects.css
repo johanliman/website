@@ -300,28 +300,33 @@
 @media (max-width: 768px) {
   .projects-grid {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
     padding: 0 1rem;
   }
   
   .project-card {
-    padding: 1.5rem;
+    padding: 2rem;
     flex-direction: column;
     text-align: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    max-width: 400px;
+    margin: 0 auto;
   }
   
   .page-heading {
     font-size: 2rem;
     margin-bottom: 1.5rem;
     padding: 0 1rem;
+    text-align: center;
   }
   
   .app-card {
-    margin: 0 1rem;
+    margin: 0 auto;
     flex-direction: column;
     text-align: center;
-    gap: 1rem;
+    gap: 1.5rem;
+    max-width: 400px;
+    padding: 2rem;
   }
   
   .app-download,
@@ -330,37 +335,45 @@
   }
   
   .homepage-apps {
-    gap: 1.5rem;
+    gap: 2rem;
     padding: 0 1rem;
   }
   
   .app-icon,
   .project-icon {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 0.5rem auto;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1rem auto;
+    order: -1;
   }
   
   .app-info,
   .project-info {
     text-align: center;
+    order: 1;
   }
   
   .app-actions,
   .project-actions {
     align-items: center;
-    margin-top: 1rem;
+    margin-top: 0;
+    order: 2;
+    gap: 1rem;
   }
   
   .app-link-btn,
   .project-link-btn {
     width: 100%;
-    max-width: 200px;
+    max-width: 250px;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
   }
   
   .download-link {
     text-align: center;
     display: block;
+    margin-top: 0.5rem;
   }
 }
 
@@ -368,41 +381,51 @@
 @media (max-width: 480px) {
   .projects-grid {
     padding: 0 0.5rem;
+    gap: 1rem;
   }
   
   .project-card {
-    padding: 1rem;
+    padding: 1.5rem;
+    max-width: 350px;
   }
   
   .page-heading {
     font-size: 1.75rem;
     margin-bottom: 1rem;
     padding: 0 0.5rem;
+    text-align: center;
   }
   
   .app-card {
-    margin: 0 0.5rem;
-    padding: 1rem;
+    margin: 0 auto;
+    padding: 1.5rem;
+    max-width: 350px;
   }
   
   .homepage-apps {
-    gap: 1rem;
+    gap: 1.5rem;
     padding: 0 0.5rem;
   }
   
   .app-icon,
   .project-icon {
-    width: 50px;
-    height: 50px;
+    width: 70px;
+    height: 70px;
   }
   
   .app-title,
   .project-title {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
   }
   
   .app-description,
   .project-description {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+  }
+  
+  .app-link-btn,
+  .project-link-btn {
+    max-width: 200px;
+    padding: 0.75rem 1rem;
   }
 }

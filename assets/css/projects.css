@@ -298,6 +298,11 @@
 
 /* ===== MODIFIED RESPONSIVE STYLES START HERE ===== */
 
+/* Hide App Store link in app-info on desktop (it's shown in app-actions instead) */
+.app-info .download-link {
+  display: none;
+}
+
 /* Responsive design for tablets and smaller devices */
 @media (max-width: 768px) {
   .page-heading {
@@ -396,6 +401,11 @@
 
   /* Download link - show directly in app-info section below app name */
   .download-link {
+    display: block;
+  }
+
+  /* Show App Store link in app-info on mobile */
+  .app-info .download-link {
     display: block;
     text-align: left;
     color: #666;

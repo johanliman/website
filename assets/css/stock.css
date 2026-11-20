@@ -717,6 +717,77 @@ body:has(.stock-container) .page-content .wrapper {
   text-align: center;
 }
 
+/* ==========================================================================
+   Apple Auth Screen
+   ========================================================================== */
+.apple-auth-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 55vh;
+  padding: 40px 16px;
+}
+
+.apple-auth-card {
+  background: var(--apple-card-bg);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-lg);
+  padding: 38px 32px;
+  width: 100%;
+  max-width: 390px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.apple-auth-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--apple-bg-subtle);
+  color: var(--apple-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 16px auto;
+}
+
+.apple-auth-card h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--apple-dark);
+  margin-bottom: 6px;
+  letter-spacing: -0.02em;
+}
+
+.apple-auth-subtitle {
+  font-size: 0.85rem;
+  color: var(--apple-gray-text);
+  margin-bottom: 22px;
+  line-height: 1.4;
+}
+
+.apple-signout-btn {
+  background: transparent;
+  color: var(--apple-gray-text);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-pill);
+  padding: 6px 14px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.apple-signout-btn:hover {
+  color: var(--stock-red);
+  border-color: rgba(255, 59, 48, 0.3);
+  background: var(--stock-red-bg);
+}
+
 /* Responsive tweaks */
 @media (max-width: 720px) {
   .stock-table th,

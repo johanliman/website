@@ -30,15 +30,33 @@ permalink: /stock/
 <!-- Chart.js CDN for Colorful Pie Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<div class="stock-container">
+<!-- Authentication Gate Screen -->
+<div id="stock-auth-section" class="stock-container apple-auth-wrapper" style="display: none;">
+  <div class="apple-auth-card" id="auth-card-content">
+    <!-- Rendered dynamically by renderLoginForm() or showCannotDisplay() -->
+  </div>
+</div>
+
+<!-- Main Portfolio Screen (hidden until authenticated) -->
+<div id="stock-main-section" class="stock-container" style="display: none;">
   <!-- Page Header -->
   <div class="stock-header">
     <div>
       <h1>Stock Portfolio</h1>
       <p>Unrealized floating profit and loss breakdown.</p>
     </div>
-    <div class="apple-badge" id="portfolio-status-badge">
-      <span id="status-text">Updated</span>
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div class="apple-badge" id="portfolio-status-badge">
+        <span id="status-text">Updated</span>
+      </div>
+      <button class="apple-signout-btn" onclick="signOut()" title="Sign out of Stock Portfolio">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+          <polyline points="16 17 21 12 16 7"></polyline>
+          <line x1="21" y1="12" x2="9" y2="12"></line>
+        </svg>
+        Sign Out
+      </button>
     </div>
   </div>
 
@@ -750,12 +768,98 @@ function escapeHtml(str) {
   });
 }
 
+// ============================================================================
+// Authentication Flow
+// ============================================================================
+const AUTH_KEY = "johan_stock_auth_v1";
+
+function renderLoginForm() {
+  const content = document.getElementById("auth-card-content");
+  if (!content) return;
+  content.innerHTML = `
+    <div class="apple-auth-icon">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+      </svg>
+    </div>
+    <h2>Sign in</h2>
+    <p class="apple-auth-subtitle">Enter credentials to access stock portfolio</p>
+    <form id="stock-login-form" onsubmit="handleLoginSubmit(event)">
+      <div class="apple-form-group" style="text-align: left; margin-bottom: 14px;">
+        <label for="auth-email">Username</label>
+        <input type="text" id="auth-email" placeholder="johanliman@gmail.com" required autocomplete="username" autofocus>
+      </div>
+      <div class="apple-form-group" style="text-align: left; margin-bottom: 22px;">
+        <label for="auth-password">Password</label>
+        <input type="password" id="auth-password" placeholder="••••••••" required autocomplete="current-password">
+      </div>
+      <button type="submit" class="apple-btn-primary" style="width: 100%; height: 46px;">
+        Sign In
+      </button>
+    </form>
+  `;
+}
+
+function showCannotDisplay() {
+  const content = document.getElementById("auth-card-content");
+  if (!content) return;
+  content.innerHTML = `
+    <div class="apple-auth-icon" style="color: var(--stock-red); background: var(--stock-red-bg);">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="15" y1="9" x2="9" y2="15"></line>
+        <line x1="9" y1="9" x2="15" y2="15"></line>
+      </svg>
+    </div>
+    <h2 style="color: var(--stock-red); margin-bottom: 6px;">Cannot display</h2>
+    <p class="apple-auth-subtitle" style="margin-bottom: 22px;">Invalid username or password.</p>
+    <button type="button" class="apple-btn-secondary" onclick="renderLoginForm()" style="width: 100%; height: 44px;">
+      Try Again
+    </button>
+  `;
+}
+
+function handleLoginSubmit(event) {
+  event.preventDefault();
+  const emailInput = document.getElementById("auth-email").value.trim().toLowerCase();
+  const passwordInput = document.getElementById("auth-password").value;
+
+  if (emailInput === "johanliman@gmail.com" && passwordInput === "Medanusa91") {
+    localStorage.setItem(AUTH_KEY, "authenticated");
+    checkAuth();
+  } else {
+    showCannotDisplay();
+  }
+}
+
+function signOut() {
+  localStorage.removeItem(AUTH_KEY);
+  checkAuth();
+}
+
+function checkAuth() {
+  const isAuth = localStorage.getItem(AUTH_KEY) === "authenticated";
+  const authSection = document.getElementById("stock-auth-section");
+  const mainSection = document.getElementById("stock-main-section");
+
+  if (isAuth) {
+    if (authSection) authSection.style.display = "none";
+    if (mainSection) mainSection.style.display = "block";
+    loadState();
+    renderTable();
+  } else {
+    if (mainSection) mainSection.style.display = "none";
+    if (authSection) authSection.style.display = "flex";
+    renderLoginForm();
+  }
+}
+
 // Initial bootstrap
 window.addEventListener("DOMContentLoaded", () => {
   const wrapper = document.querySelector(".page-content .wrapper");
   if (wrapper) wrapper.style.maxWidth = "1200px";
 
-  loadState();
-  renderTable();
+  checkAuth();
 });
 </script>

@@ -348,7 +348,7 @@ body:has(.stock-container) .page-content .wrapper {
   width: 100%;
   border-collapse: collapse;
   font-size: 0.875rem;
-  text-align: right;
+  text-align: center;
   table-layout: auto;
   box-sizing: border-box;
 }
@@ -358,6 +358,7 @@ body:has(.stock-container) .page-content .wrapper {
   padding: 12px 12px;
   font-variant-numeric: tabular-nums;
   box-sizing: border-box;
+  text-align: center;
 }
 
 .stock-table th {
@@ -368,6 +369,7 @@ body:has(.stock-container) .page-content .wrapper {
   text-transform: uppercase;
   letter-spacing: 0.06em;
   border-bottom: 1px solid var(--apple-border);
+  text-align: center;
 }
 
 .stock-table th.text-left,
@@ -378,6 +380,11 @@ body:has(.stock-container) .page-content .wrapper {
 .stock-table th.text-center,
 .stock-table td.text-center {
   text-align: center;
+}
+
+.stock-table th.text-right,
+.stock-table td.text-right {
+  text-align: right;
 }
 
 /* Main stock row */
@@ -480,7 +487,7 @@ body:has(.stock-container) .page-content .wrapper {
 }
 
 .stock-lot-val {
-  text-align: right;
+  text-align: center;
   font-weight: 500;
   color: var(--apple-dark);
 }

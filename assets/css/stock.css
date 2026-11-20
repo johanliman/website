@@ -788,8 +788,351 @@ body:has(.stock-container) .page-content .wrapper {
   background: var(--stock-red-bg);
 }
 
+/* ==========================================================================
+   Average Down Simulator (Clean Design)
+   ========================================================================== */
+.stock-lots-header-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.apple-btn-simulate-toggle {
+  background: var(--apple-bg-subtle);
+  color: var(--apple-dark);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-pill);
+  padding: 5px 12px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.apple-btn-simulate-toggle:hover {
+  background: var(--apple-black);
+  color: #ffffff;
+  border-color: var(--apple-black);
+}
+
+.apple-btn-simulate-toggle.is-active {
+  background: var(--apple-black);
+  color: #ffffff;
+  border-color: var(--apple-black);
+}
+
+.avg-down-container {
+  margin-top: 14px;
+  padding: 18px;
+  background: var(--apple-bg-subtle);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-md);
+  box-sizing: border-box;
+}
+
+.avg-down-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.avg-down-title-group {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left !important;
+}
+
+.avg-down-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--apple-dark);
+  text-align: left !important;
+}
+
+.avg-down-subtitle {
+  font-size: 0.75rem;
+  color: var(--apple-gray-text);
+  text-align: left !important;
+}
+
+/* Buy Cards */
+.sim-buy-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.sim-buy-card {
+  background: #ffffff;
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-sm);
+  padding: 12px 14px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sim-buy-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  padding-bottom: 6px;
+}
+
+.sim-buy-name {
+  font-size: 0.825rem;
+  font-weight: 700;
+  color: var(--apple-dark);
+}
+
+.sim-buy-cost-badge {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--apple-gray-text);
+  font-variant-numeric: tabular-nums;
+}
+
+.sim-erase-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--stock-red);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.sim-erase-btn:hover {
+  background: var(--stock-red-bg);
+  border-color: rgba(255, 59, 48, 0.2);
+}
+
+.sim-buy-fields {
+  display: grid;
+  grid-template-columns: 160px 1fr;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.sim-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: left;
+}
+
+.sim-field label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--apple-gray-text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.sim-price-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.sim-price-input-wrap span {
+  position: absolute;
+  left: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--apple-gray-text);
+  pointer-events: none;
+}
+
+.sim-price-input-wrap input {
+  width: 100%;
+  padding: 6px 10px 6px 22px;
+  border: 1px solid var(--apple-border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--apple-dark);
+  box-sizing: border-box;
+}
+
+.sim-price-input-wrap input:focus {
+  outline: none;
+  border-color: var(--apple-dark);
+}
+
+.sim-shares-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sim-shares-wrap input {
+  width: 90px;
+  padding: 6px 8px;
+  border: 1px solid var(--apple-border);
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--apple-dark);
+  box-sizing: border-box;
+}
+
+.sim-shares-wrap input:focus {
+  outline: none;
+  border-color: var(--apple-dark);
+}
+
+.sim-options-chips {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+
+.sim-chip {
+  background: var(--apple-bg-subtle);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-pill);
+  padding: 3px 9px;
+  font-size: 0.725rem;
+  font-weight: 600;
+  color: var(--apple-dark);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sim-chip:hover {
+  background: #e5e5ea;
+}
+
+.sim-chip.active {
+  background: var(--apple-black);
+  color: #ffffff;
+  border-color: var(--apple-black);
+}
+
+.sim-add-row-btn {
+  background: #ffffff;
+  border: 1.5px dashed var(--apple-border-strong);
+  color: var(--apple-dark);
+  border-radius: var(--apple-radius-sm);
+  padding: 9px 14px;
+  font-size: 0.775rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: 100%;
+  text-align: center;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-sizing: border-box;
+}
+
+.sim-add-row-btn:hover {
+  border-color: var(--apple-black);
+  background: var(--apple-bg-subtle);
+}
+
+.sim-empty-note {
+  text-align: center;
+  padding: 16px;
+  color: var(--apple-gray-text);
+  font-size: 0.8rem;
+  background: #ffffff;
+  border: 1px dashed var(--apple-border);
+  border-radius: var(--apple-radius-sm);
+  margin-bottom: 12px;
+}
+
+/* 4 Rows Outcome Summary Card on Bottom */
+.avg-down-summary-card {
+  background: #ffffff;
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-sm);
+  padding: 6px 14px;
+  margin-bottom: 14px;
+  box-sizing: border-box;
+}
+
+.avg-down-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  font-size: 0.85rem;
+}
+
+.avg-down-summary-row:last-child {
+  border-bottom: none;
+}
+
+.avg-down-summary-label {
+  color: var(--apple-gray-text);
+  font-weight: 600;
+}
+
+.avg-down-summary-val {
+  font-weight: 700;
+  color: var(--apple-dark);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.bep-execute-btn {
+  background: var(--apple-black);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--apple-radius-pill);
+  padding: 6px 14px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.bep-execute-btn:hover {
+  background: #333333;
+}
+
 /* Responsive tweaks */
 @media (max-width: 720px) {
+  .sim-buy-fields {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .sim-shares-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .avg-down-summary-row {
+    font-size: 0.8rem;
+    padding: 8px 0;
+  }
   .stock-table th,
   .stock-table td {
     padding: 10px 6px;

@@ -1,0 +1,727 @@
+/* ==========================================================================
+   Apple Design System - Stock Portfolio Tracker (Vibrant Edition)
+   ========================================================================== */
+
+:root {
+  --apple-black: #000000;
+  --apple-dark: #1d1d1f;
+  --apple-gray-text: #86868b;
+  --apple-light-text: #a1a1a6;
+  --apple-bg-subtle: #f5f5f7;
+  --apple-card-bg: #ffffff;
+  --apple-border: rgba(0, 0, 0, 0.08);
+  --apple-border-strong: #d2d2d7;
+  --stock-green: #15803d;
+  --stock-green-bg: #f0fdf4;
+  --stock-green-border: #bbf7d0;
+  --stock-red: #b91c1c;
+  --stock-red-bg: #fef2f2;
+  --stock-red-border: #fecaca;
+  --stock-primary: #2563eb;
+  --apple-radius-sm: 8px;
+  --apple-radius-md: 14px;
+  --apple-radius-lg: 18px;
+  --apple-radius-pill: 980px;
+}
+
+/* Page container */
+.page-content:has(.stock-container),
+body:has(.stock-container) .page-content {
+  background-color: #fbfbfd;
+}
+
+.page-content:has(.stock-container) .wrapper,
+body:has(.stock-container) .page-content .wrapper {
+  max-width: 1200px !important;
+  width: 100% !important;
+  box-sizing: border-box;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.stock-container {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  padding: 24px 0 60px;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: var(--apple-dark);
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Header Section */
+.stock-header {
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.stock-header h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 6px 0;
+  color: var(--apple-dark);
+}
+
+.stock-header p {
+  color: var(--apple-gray-text);
+  font-size: 0.95rem;
+  font-weight: 400;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.apple-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--apple-radius-pill);
+  background: var(--apple-bg-subtle);
+  color: var(--apple-dark);
+  border: 1px solid var(--apple-border);
+  letter-spacing: -0.01em;
+}
+
+/* Top Section: Pie Chart on LEFT, Metric Cards on RIGHT */
+.stock-top-section {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 880px) {
+  .stock-top-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Apple Card Surface */
+.apple-card {
+  background: var(--apple-card-bg);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-lg);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  box-sizing: border-box;
+  transition: box-shadow 0.2s ease;
+}
+
+.apple-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Metric Cards Column (RIGHT) */
+.stock-metrics-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.stock-metric-card {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.stock-card-label {
+  font-size: 0.775rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--apple-gray-text);
+  margin-bottom: 4px;
+}
+
+.stock-card-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--apple-black);
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-card-sub {
+  font-size: 0.825rem;
+  margin-top: 4px;
+  font-weight: 600;
+  color: var(--apple-gray-text);
+}
+
+.stock-card-profit {
+  border-left: 4px solid var(--stock-green);
+}
+
+.stock-card-loss {
+  border-left: 4px solid var(--stock-red);
+}
+
+/* Pie Chart Card (LEFT) */
+.stock-chart-card {
+  padding: 18px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.stock-chart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.stock-chart-title {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--apple-gray-text);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.stock-chart-body {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+  min-height: 200px;
+}
+
+@media (max-width: 580px) {
+  .stock-chart-body {
+    flex-direction: column;
+  }
+}
+
+.stock-chart-canvas-wrap {
+  position: relative;
+  width: 155px;
+  height: 155px;
+  flex-shrink: 0;
+}
+
+.stock-chart-legend {
+  flex: 1;
+  max-height: 210px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-right: 4px;
+}
+
+/* Legend items */
+.stock-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.82rem;
+  padding: 5px 8px;
+  border-radius: var(--apple-radius-sm);
+  background: var(--apple-bg-subtle);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.stock-legend-left {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.stock-legend-color {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.stock-legend-ticker {
+  font-weight: 700;
+  color: var(--apple-dark);
+  letter-spacing: -0.01em;
+}
+
+.stock-legend-shares {
+  color: var(--apple-gray-text);
+  font-size: 0.775rem;
+}
+
+.stock-legend-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-legend-val {
+  font-weight: 600;
+  color: var(--apple-dark);
+}
+
+.stock-legend-pct {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #1d4ed8;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* Action Toolbar (Single Add Stock Position Button) */
+.stock-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.apple-btn-primary {
+  background: var(--apple-black);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--apple-radius-pill);
+  height: 42px;
+  padding: 0 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  letter-spacing: -0.01em;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.apple-btn-primary:hover {
+  background: #333333;
+  transform: scale(0.99);
+}
+
+.apple-btn-secondary {
+  background: var(--apple-bg-subtle);
+  color: var(--apple-dark);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-pill);
+  height: 42px;
+  padding: 0 20px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.apple-btn-secondary:hover {
+  background: #e5e5ea;
+}
+
+/* ==========================================================================
+   Unified Table (Click row to expand details)
+   ========================================================================== */
+.stock-table-card {
+  background: var(--apple-card-bg);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-lg);
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.stock-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  text-align: right;
+  table-layout: auto;
+  box-sizing: border-box;
+}
+
+.stock-table th,
+.stock-table td {
+  padding: 12px 12px;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+}
+
+.stock-table th {
+  background: #fafafc;
+  color: var(--apple-gray-text);
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--apple-border);
+}
+
+.stock-table th.text-left,
+.stock-table td.text-left {
+  text-align: left;
+}
+
+.stock-table th.text-center,
+.stock-table td.text-center {
+  text-align: center;
+}
+
+/* Main stock row */
+.stock-main-row {
+  cursor: pointer;
+  border-bottom: 1px solid var(--apple-border);
+  transition: background-color 0.15s ease;
+}
+
+.stock-main-row:hover {
+  background-color: var(--apple-bg-subtle);
+}
+
+.stock-main-row.is-expanded {
+  background-color: #f8f8fa;
+}
+
+/* Ticker Label */
+.apple-ticker {
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: -0.01em;
+  color: var(--apple-black);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Chevron indicator */
+.apple-chevron {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  stroke: var(--apple-gray-text);
+  stroke-width: 2.2;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.is-expanded .apple-chevron {
+  transform: rotate(90deg);
+  stroke: var(--apple-black);
+}
+
+/* Expanded Detail Row */
+.stock-detail-row {
+  display: none;
+  background-color: #fbfbfd;
+  border-bottom: 1px solid var(--apple-border);
+}
+
+.stock-detail-row.is-open {
+  display: table-row;
+}
+
+.stock-detail-cell {
+  padding: 12px 16px 14px 34px !important;
+  text-align: left !important;
+}
+
+/* Nested Lots List */
+.stock-lots-wrapper {
+  background: #ffffff;
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-md);
+  padding: 10px 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
+}
+
+.stock-lots-header {
+  font-size: 0.725rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--apple-gray-text);
+  margin-bottom: 8px;
+}
+
+.stock-lot-item {
+  display: grid;
+  grid-template-columns: 80px 1fr 1fr 1fr 1fr 1fr 40px;
+  gap: 10px;
+  align-items: center;
+  padding: 7px 4px;
+  font-size: 0.825rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  font-variant-numeric: tabular-nums;
+}
+
+.stock-lot-item:last-child {
+  border-bottom: none;
+}
+
+.stock-lot-num {
+  font-weight: 600;
+  color: var(--apple-gray-text);
+  font-size: 0.775rem;
+}
+
+.stock-lot-val {
+  text-align: right;
+  font-weight: 500;
+  color: var(--apple-dark);
+}
+
+/* Profit & Loss Colors */
+.text-profit {
+  color: var(--stock-green) !important;
+  font-weight: 600;
+}
+
+.text-loss {
+  color: var(--stock-red) !important;
+  font-weight: 600;
+}
+
+/* Inline Editable Cells */
+.editable-cell {
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  border: 1px dashed transparent;
+  transition: all 0.15s ease;
+}
+
+.editable-cell:hover {
+  border-color: var(--apple-border-strong);
+  background: var(--apple-bg-subtle);
+}
+
+.editable-input {
+  width: 75px;
+  padding: 3px 6px;
+  font-size: 0.85rem;
+  border: 1.5px solid var(--stock-primary);
+  border-radius: 6px;
+  text-align: right;
+  outline: none;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  box-sizing: border-box;
+}
+
+/* Delete button */
+.apple-delete-btn {
+  background: transparent;
+  border: none;
+  color: #b0b0b5;
+  font-size: 0.95rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+  line-height: 1;
+}
+
+.apple-delete-btn:hover {
+  color: var(--stock-red);
+  background: var(--stock-red-bg);
+}
+
+/* Table Footer */
+.stock-table tfoot tr {
+  background: #fafafc;
+  font-weight: 700;
+  border-top: 1px solid var(--apple-border-strong);
+}
+
+.stock-table tfoot td {
+  padding: 14px 12px;
+  font-size: 0.9rem;
+  color: var(--apple-black);
+}
+
+/* Portfolio % pill */
+.portfolio-pct-pill {
+  display: inline-block;
+  padding: 1px 7px;
+  background: var(--apple-bg-subtle);
+  border: 1px solid var(--apple-border);
+  border-radius: var(--apple-radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--apple-dark);
+}
+
+/* Empty state */
+.stock-empty-state {
+  text-align: center;
+  padding: 36px 16px;
+  color: var(--apple-gray-text);
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   Apple Modal Design (Fixed Button Alignment)
+   ========================================================================== */
+.stock-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stock-modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.apple-modal {
+  background: #ffffff;
+  border-radius: 22px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2), 0 0 1px rgba(0, 0, 0, 0.2);
+  padding: 26px 26px 24px;
+  transform: scale(0.96) translateY(8px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.stock-modal-backdrop.open .apple-modal {
+  transform: scale(1) translateY(0);
+}
+
+.apple-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.apple-modal-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--apple-black);
+}
+
+.apple-modal-close {
+  background: var(--apple-bg-subtle);
+  border: none;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--apple-gray-text);
+  transition: all 0.15s ease;
+}
+
+.apple-modal-close:hover {
+  background: #e5e5ea;
+  color: var(--apple-black);
+}
+
+.apple-modal-body {
+  margin-bottom: 24px;
+}
+
+.apple-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.apple-form-group label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--apple-gray-text);
+}
+
+.apple-form-group input {
+  height: 48px;
+  padding: 0 16px;
+  font-size: 1rem;
+  border: 1px solid var(--apple-border-strong);
+  border-radius: 12px;
+  outline: none;
+  background: var(--apple-bg-subtle);
+  color: var(--apple-black);
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+  width: 100%;
+}
+
+.apple-form-group input:focus {
+  border-color: var(--apple-black);
+  background: #ffffff;
+}
+
+.apple-modal-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.apple-modal-footer button {
+  width: 100%;
+  height: 46px;
+  border-radius: var(--apple-radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* Responsive tweaks */
+@media (max-width: 720px) {
+  .stock-table th,
+  .stock-table td {
+    padding: 10px 6px;
+    font-size: 0.8rem;
+  }
+  .apple-ticker {
+    font-size: 0.825rem;
+  }
+  .stock-lot-item {
+    grid-template-columns: 50px 1fr 1fr 1fr 30px;
+    font-size: 0.775rem;
+  }
+}

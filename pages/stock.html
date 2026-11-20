@@ -1,0 +1,738 @@
+---
+layout: default
+title: Stock Portfolio Tracker
+permalink: /stock/
+---
+
+<!-- Chart.js CDN for Colorful Pie Chart -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="stock-container">
+  <!-- Page Header -->
+  <div class="stock-header">
+    <div>
+      <h1>Stock Portfolio</h1>
+      <p>Unrealized floating profit and loss breakdown.</p>
+    </div>
+    <div class="apple-badge" id="portfolio-status-badge">
+      <span id="status-text">Updated</span>
+    </div>
+  </div>
+
+  <!-- Top Section: Colorful Pie Chart on LEFT, 3 Metric Cards on RIGHT -->
+  <div class="stock-top-section">
+    <!-- Left Column: Colorful Pie Chart with Shares Breakdown -->
+    <div class="apple-card stock-chart-card">
+      <div class="stock-chart-header">
+        <div class="stock-chart-title">Allocation</div>
+        <span style="font-size: 0.75rem; color: var(--apple-gray-text); font-weight: 600;">By Market Value</span>
+      </div>
+      <div class="stock-chart-body">
+        <div class="stock-chart-canvas-wrap">
+          <canvas id="portfolioPieChart"></canvas>
+        </div>
+        <div class="stock-chart-legend" id="chart-legend-list">
+          <!-- Dynamically populated: Ticker, Shares count, Market Value, Portfolio % -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: 3 Metric Cards -->
+    <div class="stock-metrics-col">
+      <div class="apple-card stock-metric-card">
+        <div class="stock-card-label">Total Invested</div>
+        <div class="stock-card-value" id="total-cost">$0</div>
+        <div class="stock-card-sub">Initial capital cost</div>
+      </div>
+      <div class="apple-card stock-metric-card">
+        <div class="stock-card-label">Current Value</div>
+        <div class="stock-card-value" id="total-value">$0</div>
+        <div class="stock-card-sub">Current portfolio equity</div>
+      </div>
+      <div class="apple-card stock-metric-card" id="card-pnl">
+        <div class="stock-card-label">Floating Profit / Loss</div>
+        <div class="stock-card-value" id="total-pnl-dollar">$0</div>
+        <div class="stock-card-sub" id="total-pnl-percent">0.00%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Action Toolbar: One Clean Apple "+ Add Position" Button -->
+  <div class="stock-toolbar">
+    <div style="font-size: 0.85rem; font-weight: 600; color: var(--apple-gray-text);">
+      Holdings (<span id="total-stocks-count">0</span> stocks)
+    </div>
+    <button class="apple-btn-primary" onclick="openAddModal()">
+      <span>+ Add Stock Position</span>
+    </button>
+  </div>
+
+  <!-- Apple Unified Table (Click any row to expand purchase lots) -->
+  <div class="stock-table-card">
+    <table class="stock-table" id="stock-table">
+      <thead>
+        <tr>
+          <th class="text-left" style="width: 14%;">Symbol</th>
+          <th style="width: 10%;">Shares</th>
+          <th style="width: 11%;">Avg Buy</th>
+          <th style="width: 12%;">Total Cost</th>
+          <th style="width: 11%;">Price</th>
+          <th style="width: 13%;">Market Val</th>
+          <th style="width: 13%;">P/L ($)</th>
+          <th style="width: 9%;">P/L (%)</th>
+          <th class="text-center" style="width: 7%;">% Port</th>
+        </tr>
+      </thead>
+      <tbody id="stock-table-body">
+        <!-- Dynamically rendered combined stock rows with expandable detail -->
+      </tbody>
+      <tfoot>
+        <tr>
+          <td class="text-left" style="font-weight: 800;">Total</td>
+          <td>—</td>
+          <td>—</td>
+          <td id="footer-total-cost" style="font-weight: 800;">$0</td>
+          <td>—</td>
+          <td id="footer-current-val" style="font-weight: 800;">$0</td>
+          <td id="footer-pnl-dollar" style="font-weight: 800;">$0</td>
+          <td id="footer-pnl-percent" style="font-weight: 800;">0.00%</td>
+          <td class="text-center" style="font-weight: 800;">100%</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<!-- Apple Modal: Add Stock Position -->
+<div class="stock-modal-backdrop" id="add-stock-modal" onclick="if(event.target === this) closeAddModal()">
+  <div class="apple-modal">
+    <div class="apple-modal-header">
+      <h3>Add Position</h3>
+      <button class="apple-modal-close" onclick="closeAddModal()">&times;</button>
+    </div>
+    <form id="add-stock-form" onsubmit="handleAddStock(event)">
+      <div class="apple-modal-body">
+        <div class="apple-form-group">
+          <label for="input-symbol">Stock Symbol</label>
+          <input type="text" id="input-symbol" placeholder="e.g. HOOD, MSTR, AAPL" required autocomplete="off" style="text-transform: uppercase;">
+        </div>
+        <div class="apple-form-group">
+          <label for="input-buy-price">Buy Price ($)</label>
+          <input type="number" id="input-buy-price" step="any" min="0.0001" placeholder="e.g. 125.00" required>
+        </div>
+        <div class="apple-form-group">
+          <label for="input-quantity">Quantity (Shares)</label>
+          <input type="number" id="input-quantity" step="any" min="0.0001" placeholder="e.g. 100" required>
+        </div>
+      </div>
+      <div class="apple-modal-footer">
+        <button type="button" class="apple-btn-secondary" onclick="closeAddModal()">Cancel</button>
+        <button type="submit" id="modal-submit-btn" class="apple-btn-primary">+ Add</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ============================================================================
+// Apple Vibrant Unified Stock Portfolio Logic
+// ============================================================================
+
+// Portfolio dataset with the original positions PLUS SOFI, additional BABA lot, and additional NFLX lot
+const DEFAULT_PORTFOLIO = [
+  { id: "p1",  symbol: "MSTR", buyPrice: 350.00, quantity: 100, currentPrice: 77.80 },
+  { id: "p2",  symbol: "MSTR", buyPrice: 250.00, quantity: 100, currentPrice: 77.80 },
+  { id: "p3",  symbol: "PLTR", buyPrice: 185.00, quantity: 200, currentPrice: 143.49 },
+  { id: "p4",  symbol: "HOOD", buyPrice: 115.00, quantity: 100, currentPrice: 62.17 },
+  { id: "p5",  symbol: "HOOD", buyPrice: 125.00, quantity: 200, currentPrice: 62.17 },
+  { id: "p6",  symbol: "HOOD", buyPrice: 130.00, quantity: 200, currentPrice: 62.17 },
+  { id: "p7",  symbol: "HIMS", buyPrice: 45.00,  quantity: 400, currentPrice: 14.60 },
+  { id: "p8",  symbol: "HIMS", buyPrice: 55.00,  quantity: 400, currentPrice: 14.60 },
+  { id: "p9",  symbol: "HIMS", buyPrice: 56.00,  quantity: 200, currentPrice: 14.60 },
+  { id: "p10", symbol: "NFLX", buyPrice: 108.00, quantity: 200, currentPrice: 56.73 },
+  { id: "p11", symbol: "BABA", buyPrice: 110.00, quantity: 200, currentPrice: 81.08 },
+  { id: "p12", symbol: "NOW",  buyPrice: 125.00, quantity: 100, currentPrice: 87.61 },
+  { id: "p13", symbol: "MARA", buyPrice: 24.50,  quantity: 100, currentPrice: 5.09 },
+  { id: "p14", symbol: "CZR",  buyPrice: 26.50,  quantity: 400, currentPrice: 29.06 },
+  { id: "p15", symbol: "OSCR", buyPrice: 20.00,  quantity: 1000, currentPrice: 24.73 },
+  // Newly added requested positions
+  { id: "p16", symbol: "SOFI", buyPrice: 17.00,  quantity: 1000, currentPrice: 12.48 },
+  { id: "p17", symbol: "BABA", buyPrice: 120.00, quantity: 200,  currentPrice: 81.08 },
+  { id: "p18", symbol: "NFLX", buyPrice: 70.00,  quantity: 200,  currentPrice: 56.73 }
+];
+
+// Reference baseline market prices
+const KNOWN_PRICES = {
+  "AAPL": 228.80, "NVDA": 142.30, "MSFT": 424.50, "TSLA": 234.60,
+  "AMZN": 208.20, "GOOGL": 178.50, "GOOG": 179.10, "META": 586.20,
+  "AMD": 138.40, "COIN": 216.50, "SMCI": 28.50, "INTC": 24.30,
+  "SPY": 591.20, "QQQ": 505.80, "MSTR": 77.80, "HOOD": 62.17,
+  "HIMS": 14.60, "PLTR": 143.49, "NFLX": 56.73, "BABA": 81.08,
+  "NOW": 87.61, "MARA": 5.09, "CZR": 29.06, "OSCR": 24.73,
+  "SOFI": 12.48
+};
+
+const STORAGE_KEY = "johan_stock_v5";
+
+let portfolio = [];
+let expandedSymbols = new Set();
+let pieChartInstance = null;
+
+// Colorful palette for donut chart
+const VIBRANT_CHART_COLORS = [
+  "#3b82f6", // Blue
+  "#10b981", // Emerald
+  "#f59e0b", // Amber
+  "#8b5cf6", // Purple
+  "#ec4899", // Pink
+  "#06b6d4", // Cyan
+  "#f97316", // Orange
+  "#14b8a6", // Teal
+  "#6366f1", // Indigo
+  "#84cc16", // Lime
+  "#e11d48", // Rose
+  "#a855f7", // Violet
+  "#0ea5e9", // Sky
+  "#eab308", // Yellow
+  "#64748b"  // Slate
+];
+
+// Formatting
+function formatCurrency(val, forceSign = false) {
+  if (isNaN(val) || val === null || val === undefined) return "$0";
+  const abs = Math.abs(val);
+  const isWhole = Math.abs(abs - Math.round(abs)) < 0.005;
+
+  const formattedAbs = abs.toLocaleString("en-US", {
+    minimumFractionDigits: isWhole ? 0 : 2,
+    maximumFractionDigits: 2
+  });
+
+  if (val < -0.005) {
+    return `-$${formattedAbs}`;
+  } else if (val > 0.005 && forceSign) {
+    return `+$${formattedAbs}`;
+  }
+  return `$${formattedAbs}`;
+}
+
+function formatPercent(val) {
+  if (isNaN(val) || val === null || val === undefined) return "0.00%";
+  const formatted = Math.abs(val).toFixed(2);
+  if (val < -0.005) return `-${formatted}%`;
+  if (val > 0.005) return `+${formatted}%`;
+  return `${formatted}%`;
+}
+
+function formatNumber(val) {
+  if (isNaN(val) || val === null || val === undefined) return "0";
+  return Number(val).toLocaleString("en-US", { maximumFractionDigits: 2 });
+}
+
+// Load / Save State
+function loadState() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      portfolio = JSON.parse(saved);
+    } else {
+      portfolio = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO));
+      saveState();
+    }
+  } catch (e) {
+    portfolio = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO));
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(portfolio));
+  } catch (e) {
+    console.error("Failed to save to localStorage:", e);
+  }
+}
+
+// Group positions by symbol
+function getGroupedPortfolio() {
+  const map = new Map();
+
+  portfolio.forEach((pos) => {
+    const sym = pos.symbol.trim().toUpperCase();
+    const qty = Number(pos.quantity) || 0;
+    const buyPrice = Number(pos.buyPrice) || 0;
+    const currentPrice = Number(pos.currentPrice) || 0;
+    const cost = buyPrice * qty;
+
+    if (!map.has(sym)) {
+      map.set(sym, {
+        symbol: sym,
+        totalShares: 0,
+        totalCost: 0,
+        currentPrice: currentPrice,
+        lots: []
+      });
+    }
+
+    const entry = map.get(sym);
+    entry.totalShares += qty;
+    entry.totalCost += cost;
+    if (currentPrice > 0) entry.currentPrice = currentPrice;
+
+    entry.lots.push({
+      id: pos.id,
+      buyPrice: buyPrice,
+      quantity: qty,
+      cost: cost,
+      currentPrice: currentPrice
+    });
+  });
+
+  const list = [];
+  map.forEach((entry) => {
+    const avgBuyPrice = entry.totalShares > 0 ? entry.totalCost / entry.totalShares : 0;
+    const currentVal = entry.totalShares * entry.currentPrice;
+    const pnlDollar = currentVal - entry.totalCost;
+    const pnlPercent = entry.totalCost > 0 ? (pnlDollar / entry.totalCost) * 100 : 0;
+
+    list.push({
+      symbol: entry.symbol,
+      totalShares: entry.totalShares,
+      avgBuyPrice: avgBuyPrice,
+      totalCost: entry.totalCost,
+      currentPrice: entry.currentPrice,
+      currentVal: currentVal,
+      pnlDollar: pnlDollar,
+      pnlPercent: pnlPercent,
+      lots: entry.lots
+    });
+  });
+
+  return list;
+}
+
+// Toggle row expansion
+function toggleExpand(symbol) {
+  if (expandedSymbols.has(symbol)) {
+    expandedSymbols.delete(symbol);
+  } else {
+    expandedSymbols.add(symbol);
+  }
+  renderTable();
+}
+
+// Render Table & Metrics
+function renderTable() {
+  const tbody = document.getElementById("stock-table-body");
+  const countBadge = document.getElementById("total-stocks-count");
+  if (!tbody) return;
+
+  const grouped = getGroupedPortfolio();
+  if (countBadge) countBadge.textContent = grouped.length.toString();
+
+  // Compute portfolio totals
+  let totalCost = 0;
+  let totalCurrentVal = 0;
+
+  portfolio.forEach((pos) => {
+    const buyPrice = Number(pos.buyPrice) || 0;
+    const qty = Number(pos.quantity) || 0;
+    const currentPrice = Number(pos.currentPrice) || 0;
+    totalCost += buyPrice * qty;
+    totalCurrentVal += currentPrice * qty;
+  });
+
+  const totalPnlDollar = totalCurrentVal - totalCost;
+  const totalPnlPercent = totalCost > 0 ? (totalPnlDollar / totalCost) * 100 : 0;
+
+  // Update Top Metric Cards
+  document.getElementById("total-cost").textContent = formatCurrency(totalCost);
+  document.getElementById("total-value").textContent = formatCurrency(totalCurrentVal);
+
+  const pnlDollarEl = document.getElementById("total-pnl-dollar");
+  const pnlPercentEl = document.getElementById("total-pnl-percent");
+  const cardPnl = document.getElementById("card-pnl");
+
+  pnlDollarEl.textContent = formatCurrency(totalPnlDollar, true);
+  pnlPercentEl.textContent = formatPercent(totalPnlPercent);
+
+  if (totalPnlDollar > 0.005) {
+    pnlDollarEl.className = "stock-card-value text-profit";
+    pnlPercentEl.className = "stock-card-sub text-profit";
+    if (cardPnl) cardPnl.className = "apple-card stock-metric-card stock-card-profit";
+  } else if (totalPnlDollar < -0.005) {
+    pnlDollarEl.className = "stock-card-value text-loss";
+    pnlPercentEl.className = "stock-card-sub text-loss";
+    if (cardPnl) cardPnl.className = "apple-card stock-metric-card stock-card-loss";
+  } else {
+    pnlDollarEl.className = "stock-card-value";
+    pnlPercentEl.className = "stock-card-sub";
+    if (cardPnl) cardPnl.className = "apple-card stock-metric-card";
+  }
+
+  // Update Footer Row
+  document.getElementById("footer-total-cost").textContent = formatCurrency(totalCost);
+  document.getElementById("footer-current-val").textContent = formatCurrency(totalCurrentVal);
+
+  const footerPnlDollar = document.getElementById("footer-pnl-dollar");
+  const footerPnlPercent = document.getElementById("footer-pnl-percent");
+
+  footerPnlDollar.textContent = formatCurrency(totalPnlDollar, true);
+  footerPnlPercent.textContent = formatPercent(totalPnlPercent);
+
+  footerPnlDollar.className = totalPnlDollar > 0 ? "text-profit" : (totalPnlDollar < 0 ? "text-loss" : "");
+  footerPnlPercent.className = totalPnlPercent > 0 ? "text-profit" : (totalPnlPercent < 0 ? "text-loss" : "");
+
+  // Update Pie Chart & Legend on LEFT
+  updatePieChartAndLegend(totalCurrentVal);
+
+  tbody.innerHTML = "";
+
+  if (grouped.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" class="stock-empty-state">
+          No stock positions yet. Click "+ Add Stock Position" to begin.
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  // Sort by Market Value descending
+  grouped.sort((a, b) => b.currentVal - a.currentVal);
+
+  grouped.forEach((item) => {
+    const isExpanded = expandedSymbols.has(item.symbol);
+    const portPct = totalCurrentVal > 0 ? (item.currentVal / totalCurrentVal) * 100 : 0;
+    const isProfit = item.pnlDollar > 0.005;
+    const isLoss = item.pnlDollar < -0.005;
+    const pnlClass = isProfit ? "text-profit" : (isLoss ? "text-loss" : "");
+
+    // Main Aggregated Stock Row
+    const mainTr = document.createElement("tr");
+    mainTr.className = `stock-main-row ${isExpanded ? 'is-expanded' : ''}`;
+    mainTr.onclick = (e) => {
+      if (e.target.tagName === "INPUT" || e.target.classList.contains("editable-cell")) return;
+      toggleExpand(item.symbol);
+    };
+
+    mainTr.innerHTML = `
+      <td class="text-left">
+        <span class="apple-ticker">
+          <svg class="apple-chevron" viewBox="0 0 24 24">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+          ${escapeHtml(item.symbol)}
+        </span>
+      </td>
+      <td>${formatNumber(item.totalShares)}</td>
+      <td>${formatCurrency(item.avgBuyPrice)}</td>
+      <td style="font-weight: 600;">${formatCurrency(item.totalCost)}</td>
+      <td>
+        <span class="editable-cell" title="Click to edit current price" onclick="event.stopPropagation(); editGroupedPrice(this, '${item.symbol}', ${item.currentPrice})">
+          ${formatCurrency(item.currentPrice)}
+        </span>
+      </td>
+      <td style="font-weight: 600;">${formatCurrency(item.currentVal)}</td>
+      <td class="${pnlClass}">${formatCurrency(item.pnlDollar, true)}</td>
+      <td class="${pnlClass}">${formatPercent(item.pnlPercent)}</td>
+      <td class="text-center">
+        <span class="portfolio-pct-pill">${portPct.toFixed(1)}%</span>
+      </td>
+    `;
+    tbody.appendChild(mainTr);
+
+    // Detail Row (Purchase Lots Accordion)
+    if (isExpanded) {
+      const detailTr = document.createElement("tr");
+      detailTr.className = "stock-detail-row is-open";
+
+      let lotsHtml = "";
+      item.lots.forEach((lot, lotIndex) => {
+        const lotVal = lot.quantity * item.currentPrice;
+        const lotPnl = lotVal - lot.cost;
+        const lotPct = lot.cost > 0 ? (lotPnl / lot.cost) * 100 : 0;
+        const lotPnlClass = lotPnl > 0.005 ? "text-profit" : (lotPnl < -0.005 ? "text-loss" : "");
+
+        lotsHtml += `
+          <div class="stock-lot-item">
+            <div class="stock-lot-num">Lot ${lotIndex + 1}</div>
+            <div class="stock-lot-val">
+              <span class="editable-cell" title="Click to edit shares" onclick="editLotField('${lot.id}', 'quantity', ${lot.quantity}, this)">
+                ${formatNumber(lot.quantity)} shares
+              </span>
+            </div>
+            <div class="stock-lot-val">
+              @ <span class="editable-cell" title="Click to edit buy price" onclick="editLotField('${lot.id}', 'buyPrice', ${lot.buyPrice}, this)">
+                ${formatCurrency(lot.buyPrice)}
+              </span>
+            </div>
+            <div class="stock-lot-val">Cost: ${formatCurrency(lot.cost)}</div>
+            <div class="stock-lot-val">Val: ${formatCurrency(lotVal)}</div>
+            <div class="stock-lot-val ${lotPnlClass}">
+              ${formatCurrency(lotPnl, true)} (${formatPercent(lotPct)})
+            </div>
+            <div style="text-align: right;">
+              <button class="apple-delete-btn" title="Remove this lot" onclick="deleteLot('${lot.id}')">&times;</button>
+            </div>
+          </div>
+        `;
+      });
+
+      detailTr.innerHTML = `
+        <td colspan="9" class="stock-detail-cell">
+          <div class="stock-lots-wrapper">
+            <div class="stock-lots-header">
+              <span>Purchase History (${item.lots.length} lot${item.lots.length > 1 ? 's' : ''})</span>
+            </div>
+            ${lotsHtml}
+          </div>
+        </td>
+      `;
+      tbody.appendChild(detailTr);
+    }
+  });
+}
+
+// Portfolio Allocation Pie Chart & Legend (LEFT)
+function updatePieChartAndLegend(totalCurrentVal) {
+  const canvas = document.getElementById("portfolioPieChart");
+  const legendContainer = document.getElementById("chart-legend-list");
+  if (!canvas || typeof Chart === "undefined") return;
+
+  const grouped = getGroupedPortfolio();
+  const validItems = grouped.filter(g => g.currentVal > 0);
+  validItems.sort((a, b) => b.currentVal - a.currentVal);
+
+  const labels = validItems.map(g => g.symbol);
+  const data = validItems.map(g => Math.round(g.currentVal * 100) / 100);
+  const bgColors = validItems.map((_, i) => VIBRANT_CHART_COLORS[i % VIBRANT_CHART_COLORS.length]);
+
+  // Update Colorful Legend
+  if (legendContainer) {
+    legendContainer.innerHTML = "";
+    if (validItems.length === 0) {
+      legendContainer.innerHTML = `<div style="color:var(--apple-gray-text); font-size:0.8rem;">No positions.</div>`;
+    } else {
+      validItems.forEach((item, index) => {
+        const color = bgColors[index];
+        const pct = totalCurrentVal > 0 ? ((item.currentVal / totalCurrentVal) * 100).toFixed(1) : "0.0";
+
+        const div = document.createElement("div");
+        div.className = "stock-legend-item";
+        div.innerHTML = `
+          <div class="stock-legend-left">
+            <span class="stock-legend-color" style="background-color: ${color};"></span>
+            <span class="stock-legend-ticker">${escapeHtml(item.symbol)}</span>
+            <span class="stock-legend-shares">${formatNumber(item.totalShares)} shares</span>
+          </div>
+          <div class="stock-legend-right">
+            <span class="stock-legend-val">${formatCurrency(item.currentVal)}</span>
+            <span class="stock-legend-pct">${pct}%</span>
+          </div>
+        `;
+        legendContainer.appendChild(div);
+      });
+    }
+  }
+
+  // Render / Update Colorful Chart.js Doughnut
+  if (pieChartInstance) {
+    pieChartInstance.data.labels = labels;
+    pieChartInstance.data.datasets[0].data = data;
+    pieChartInstance.data.datasets[0].backgroundColor = bgColors;
+    pieChartInstance.update();
+  } else {
+    const ctx = canvas.getContext("2d");
+    pieChartInstance = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: bgColors,
+          borderWidth: 2,
+          borderColor: "#ffffff"
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: "rgba(0,0,0,0.85)",
+            padding: 10,
+            cornerRadius: 10,
+            titleFont: { size: 12, weight: "bold" },
+            bodyFont: { size: 12 },
+            callbacks: {
+              label: function(context) {
+                const val = context.raw || 0;
+                const total = totalCurrentVal || 1;
+                const pct = ((val / total) * 100).toFixed(1);
+                const item = validItems[context.dataIndex];
+                const sharesStr = item ? `${formatNumber(item.totalShares)} shares • ` : "";
+                return ` ${context.label}: ${sharesStr}$${val.toLocaleString()} (${pct}%)`;
+              }
+            }
+          }
+        },
+        cutout: "60%"
+      }
+    });
+  }
+}
+
+// Inline editing on a lot (buyPrice or quantity)
+function editLotField(id, field, currentValue, element) {
+  const input = document.createElement("input");
+  input.type = "number";
+  input.step = "any";
+  input.className = "editable-input";
+  input.value = currentValue;
+
+  const save = () => {
+    const val = parseFloat(input.value);
+    if (!isNaN(val) && val > 0) {
+      const item = portfolio.find(p => p.id === id);
+      if (item) {
+        item[field] = val;
+        saveState();
+      }
+    }
+    renderTable();
+  };
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") input.blur();
+    else if (e.key === "Escape") renderTable();
+  });
+  input.addEventListener("blur", save);
+
+  element.parentNode.replaceChild(input, element);
+  input.focus();
+  input.select();
+}
+
+// Inline editing on parent ticker's current price
+function editGroupedPrice(element, symbol, currentPrice) {
+  const input = document.createElement("input");
+  input.type = "number";
+  input.step = "any";
+  input.className = "editable-input";
+  input.value = currentPrice;
+
+  const save = () => {
+    const newVal = parseFloat(input.value);
+    if (!isNaN(newVal) && newVal >= 0) {
+      portfolio.forEach(p => {
+        if (p.symbol.toUpperCase() === symbol.toUpperCase()) {
+          p.currentPrice = newVal;
+        }
+      });
+      saveState();
+    }
+    renderTable();
+  };
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") input.blur();
+    else if (e.key === "Escape") renderTable();
+  });
+  input.addEventListener("blur", save);
+
+  element.parentNode.replaceChild(input, element);
+  input.focus();
+  input.select();
+}
+
+// Delete a specific lot
+function deleteLot(id) {
+  portfolio = portfolio.filter(p => p.id !== id);
+  saveState();
+  renderTable();
+}
+
+// Modal Handling
+function openAddModal() {
+  document.getElementById("input-symbol").value = "";
+  document.getElementById("input-buy-price").value = "";
+  document.getElementById("input-quantity").value = "";
+  const submitBtn = document.getElementById("modal-submit-btn");
+  if (submitBtn) {
+    submitBtn.disabled = false;
+    submitBtn.textContent = "+ Add";
+  }
+  document.getElementById("add-stock-modal").classList.add("open");
+  setTimeout(() => document.getElementById("input-symbol").focus(), 80);
+}
+
+function closeAddModal() {
+  document.getElementById("add-stock-modal").classList.remove("open");
+}
+
+// Add New Position (Modal Submit)
+async function handleAddStock(e) {
+  e.preventDefault();
+  const symbolInput = document.getElementById("input-symbol");
+  const buyPriceInput = document.getElementById("input-buy-price");
+  const qtyInput = document.getElementById("input-quantity");
+  const submitBtn = document.getElementById("modal-submit-btn");
+
+  const symbol = symbolInput.value.trim().toUpperCase();
+  const buyPrice = parseFloat(buyPriceInput.value);
+  const quantity = parseFloat(qtyInput.value);
+
+  if (!symbol || isNaN(buyPrice) || isNaN(quantity) || buyPrice <= 0 || quantity <= 0) {
+    return;
+  }
+
+  // 1. Check if symbol already exists in portfolio to use its current market price
+  const existing = portfolio.find(p => p.symbol.toUpperCase() === symbol);
+  let currentPrice = (existing && existing.currentPrice > 0) ? existing.currentPrice : null;
+
+  // 2. Check reference baseline price if new
+  if (!currentPrice && KNOWN_PRICES[symbol]) {
+    currentPrice = KNOWN_PRICES[symbol];
+  }
+
+  // 3. Fallback prompt if quote is completely unknown so P&L is never 0
+  if (!currentPrice || currentPrice <= 0) {
+    const entered = prompt(`Current market price for ${symbol}:`, (buyPrice * 1.05).toFixed(2));
+    if (entered && !isNaN(parseFloat(entered)) && parseFloat(entered) > 0) {
+      currentPrice = parseFloat(entered);
+    } else {
+      currentPrice = buyPrice;
+    }
+  }
+
+  const newPosition = {
+    id: "p_" + Date.now() + "_" + Math.floor(Math.random() * 1000),
+    symbol: symbol,
+    buyPrice: buyPrice,
+    quantity: quantity,
+    currentPrice: currentPrice
+  };
+
+  portfolio.unshift(newPosition);
+  saveState();
+  closeAddModal();
+  renderTable();
+}
+
+function escapeHtml(str) {
+  return String(str).replace(/[&<>"']/g, function(m) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+  });
+}
+
+// Initial bootstrap
+window.addEventListener("DOMContentLoaded", () => {
+  const wrapper = document.querySelector(".page-content .wrapper");
+  if (wrapper) wrapper.style.maxWidth = "1200px";
+
+  loadState();
+  renderTable();
+});
+</script>

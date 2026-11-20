@@ -374,12 +374,12 @@ body:has(.stock-container) .page-content .wrapper {
 
 .stock-table th.text-left,
 .stock-table td.text-left {
-  text-align: left;
+  text-align: left !important;
 }
 
 .stock-table th.text-center,
 .stock-table td.text-center {
-  text-align: center;
+  text-align: center !important;
 }
 
 .stock-table th.text-right,

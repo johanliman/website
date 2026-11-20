@@ -4,6 +4,29 @@ title: Stock Portfolio Tracker
 permalink: /stock/
 ---
 
+<!-- Critical in-page CSS to enforce center alignment regardless of cached stylesheets -->
+<style>
+  .stock-table,
+  .stock-table th,
+  .stock-table td,
+  .stock-table tbody td,
+  .stock-table thead th,
+  .stock-table tfoot td {
+    text-align: center !important;
+  }
+  .stock-table th.text-left,
+  .stock-table td.text-left,
+  .stock-table tbody td.text-left,
+  .stock-table thead th.text-left,
+  .stock-table tfoot td.text-left {
+    text-align: left !important;
+  }
+  .stock-table th.text-center,
+  .stock-table td.text-center {
+    text-align: center !important;
+  }
+</style>
+
 <!-- Chart.js CDN for Colorful Pie Chart -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -89,13 +112,13 @@ permalink: /stock/
       <tfoot>
         <tr>
           <td class="text-left" style="font-weight: 800;">Total</td>
-          <td>—</td>
-          <td>—</td>
-          <td id="footer-total-cost" style="font-weight: 800;">$0</td>
-          <td>—</td>
-          <td id="footer-current-val" style="font-weight: 800;">$0</td>
-          <td id="footer-pnl-dollar" style="font-weight: 800;">$0</td>
-          <td id="footer-pnl-percent" style="font-weight: 800;">0.00%</td>
+          <td class="text-center">—</td>
+          <td class="text-center">—</td>
+          <td class="text-center" id="footer-total-cost" style="font-weight: 800;">$0</td>
+          <td class="text-center">—</td>
+          <td class="text-center" id="footer-current-val" style="font-weight: 800;">$0</td>
+          <td class="text-center" id="footer-pnl-dollar" style="font-weight: 800;">$0</td>
+          <td class="text-center" id="footer-pnl-percent" style="font-weight: 800;">0.00%</td>
           <td class="text-center" style="font-weight: 800;">100%</td>
         </tr>
       </tfoot>
@@ -425,17 +448,17 @@ function renderTable() {
           ${escapeHtml(item.symbol)}
         </span>
       </td>
-      <td>${formatCurrency(item.avgBuyPrice)}</td>
-      <td>${formatNumber(item.totalShares)}</td>
-      <td style="font-weight: 600;">${formatCurrency(item.totalCost)}</td>
-      <td>
+      <td class="text-center">${formatCurrency(item.avgBuyPrice)}</td>
+      <td class="text-center">${formatNumber(item.totalShares)}</td>
+      <td class="text-center" style="font-weight: 600;">${formatCurrency(item.totalCost)}</td>
+      <td class="text-center">
         <span class="editable-cell" title="Click to edit current price" onclick="event.stopPropagation(); editGroupedPrice(this, '${item.symbol}', ${item.currentPrice})">
           ${formatCurrency(item.currentPrice)}
         </span>
       </td>
-      <td style="font-weight: 600;">${formatCurrency(item.currentVal)}</td>
-      <td class="${pnlClass}">${formatCurrency(item.pnlDollar, true)}</td>
-      <td class="${pnlClass}">${formatPercent(item.pnlPercent)}</td>
+      <td class="text-center" style="font-weight: 600;">${formatCurrency(item.currentVal)}</td>
+      <td class="text-center ${pnlClass}">${formatCurrency(item.pnlDollar, true)}</td>
+      <td class="text-center ${pnlClass}">${formatPercent(item.pnlPercent)}</td>
       <td class="text-center">
         <span class="portfolio-pct-pill">${portPct.toFixed(1)}%</span>
       </td>

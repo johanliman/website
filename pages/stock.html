@@ -73,8 +73,8 @@ permalink: /stock/
       <thead>
         <tr>
           <th class="text-left" style="width: 14%;">Symbol</th>
-          <th class="text-center" style="width: 10%;">Shares</th>
           <th class="text-center" style="width: 11%;">Avg Buy</th>
+          <th class="text-center" style="width: 10%;">Shares</th>
           <th class="text-center" style="width: 12%;">Total Cost</th>
           <th class="text-center" style="width: 11%;">Price</th>
           <th class="text-center" style="width: 13%;">Market Val</th>
@@ -425,8 +425,8 @@ function renderTable() {
           ${escapeHtml(item.symbol)}
         </span>
       </td>
-      <td>${formatNumber(item.totalShares)}</td>
       <td>${formatCurrency(item.avgBuyPrice)}</td>
+      <td>${formatNumber(item.totalShares)}</td>
       <td style="font-weight: 600;">${formatCurrency(item.totalCost)}</td>
       <td>
         <span class="editable-cell" title="Click to edit current price" onclick="event.stopPropagation(); editGroupedPrice(this, '${item.symbol}', ${item.currentPrice})">
@@ -458,13 +458,13 @@ function renderTable() {
           <div class="stock-lot-item">
             <div class="stock-lot-num">Lot ${lotIndex + 1}</div>
             <div class="stock-lot-val">
-              <span class="editable-cell" title="Click to edit shares" onclick="editLotField('${lot.id}', 'quantity', ${lot.quantity}, this)">
-                ${formatNumber(lot.quantity)} shares
+              @ <span class="editable-cell" title="Click to edit buy price" onclick="editLotField('${lot.id}', 'buyPrice', ${lot.buyPrice}, this)">
+                ${formatCurrency(lot.buyPrice)}
               </span>
             </div>
             <div class="stock-lot-val">
-              @ <span class="editable-cell" title="Click to edit buy price" onclick="editLotField('${lot.id}', 'buyPrice', ${lot.buyPrice}, this)">
-                ${formatCurrency(lot.buyPrice)}
+              <span class="editable-cell" title="Click to edit shares" onclick="editLotField('${lot.id}', 'quantity', ${lot.quantity}, this)">
+                ${formatNumber(lot.quantity)} shares
               </span>
             </div>
             <div class="stock-lot-val">Cost: ${formatCurrency(lot.cost)}</div>

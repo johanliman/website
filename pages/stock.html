@@ -220,7 +220,7 @@ const KNOWN_PRICES = {
 
 // Endpoints for real-time live data
 const STOCK_DATA_PATH = "{{ '/assets/data/stock-prices.json' | relative_url }}";
-const STOCK_API_PATH = "{{ '/api/stock-prices' | relative_url }}";
+const STOCK_API_PATH = "https://stock-price-worker.johanliman.workers.dev";
 const STOCK_WORKER_PATH = "{{ '/assets/js/stock-timer-worker.js' | relative_url }}";
 
 let lastFetchTimestamp = 0;
@@ -1152,9 +1152,11 @@ async function fetchLatestPrices(isSilent = false) {
   try {
     let prices = null;
 
-    // 1. Try Cloudflare Worker / edge API route if deployed
+    // 1. Try Cloudflare Worker edge API
     try {
-      const apiResp = await fetch(STOCK_API_PATH, { cache: "no-store" });
+      const activeSymbols = [...new Set(portfolio.map(p => (p.symbol || "").trim().toUpperCase()).filter(Boolean))];
+      const queryParam = activeSymbols.length > 0 ? `?symbols=${encodeURIComponent(activeSymbols.join(','))}` : '';
+      const apiResp = await fetch(`${STOCK_API_PATH}${queryParam}`, { cache: "no-store" });
       if (apiResp.ok) {
         const apiData = await apiResp.json();
         if (apiData && apiData.prices && Object.keys(apiData.prices).length > 0) {
@@ -1162,7 +1164,7 @@ async function fetchLatestPrices(isSilent = false) {
         }
       }
     } catch (err) {
-      // API route not active, proceed to static data fallback
+      // Cloudflare Worker unreachable, proceed to static data fallback
     }
 
     // 2. Fallback to static stock-prices.json updated by GitHub Action

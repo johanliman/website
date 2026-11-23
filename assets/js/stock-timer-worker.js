@@ -5,7 +5,7 @@
  */
 
 let timerId = null;
-const INTERVAL_MS = 2 * 60 * 1000; // 2 minutes
+const INTERVAL_MS = 1 * 60 * 1000; // 1 minute (60,000 ms)
 
 self.onmessage = function (e) {
   const command = e.data;

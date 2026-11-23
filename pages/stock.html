@@ -53,11 +53,7 @@ permalink: /stock/
       <h1>Stock Portfolio</h1>
       <p>Unrealized floating profit and loss breakdown.</p>
     </div>
-    <div style="display: flex; align-items: center; gap: 10px;">
-      <div class="apple-badge" id="portfolio-status-badge">
-        <span class="status-dot"></span>
-        <span id="status-text">Live</span>
-      </div>
+    <div>
       <button class="apple-signout-btn" onclick="signOut()" title="Sign out of Stock Portfolio">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -1209,10 +1205,10 @@ async function fetchLatestPrices(isSilent = false) {
 
       const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
       if (statusText) {
-        statusText.textContent = `Live • ${timeStr}`;
+        statusText.textContent = `Updated • ${timeStr}`;
       }
     } else {
-      if (statusText) statusText.textContent = "Live";
+      if (statusText) statusText.textContent = "Updated";
     }
   } catch (e) {
     console.warn("Background stock price fetch error:", e);
@@ -1225,7 +1221,7 @@ async function fetchLatestPrices(isSilent = false) {
 function startAutoRefresh() {
   stopAutoRefresh();
 
-  // 1. Web Worker for background 2-minute ticks (prevents browser tab throttling)
+  // 1. Web Worker for background 1-minute ticks (prevents browser tab throttling)
   try {
     timerWorkerInstance = new Worker(STOCK_WORKER_PATH);
     timerWorkerInstance.onmessage = function (e) {
@@ -1238,10 +1234,10 @@ function startAutoRefresh() {
     console.info("Web Worker not supported or restricted, falling back to setInterval:", err);
     fallbackIntervalTimer = setInterval(() => {
       fetchLatestPrices(true);
-    }, 2 * 60 * 1000); // exactly 2 minutes
+    }, 1 * 60 * 1000); // exactly 1 minute
   }
 
-  // 2. Tab visibility listener: if user returns to tab after 2+ minutes, refresh immediately
+  // 2. Tab visibility listener: if user returns to tab after 1+ minute, refresh immediately
   document.removeEventListener("visibilitychange", handleVisibilityChange);
   document.addEventListener("visibilitychange", handleVisibilityChange);
 }
@@ -1249,7 +1245,7 @@ function startAutoRefresh() {
 function handleVisibilityChange() {
   if (document.visibilityState === "visible") {
     const elapsed = Date.now() - lastFetchTimestamp;
-    if (elapsed >= 2 * 60 * 1000) {
+    if (elapsed >= 1 * 60 * 1000) {
       fetchLatestPrices(true);
     }
   }

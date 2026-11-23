@@ -1,45 +1,45 @@
 {
-  "updated_at": "2026-11-23T16:40:48.681202+00:00",
-  "updated_timestamp": 1795452048,
+  "updated_at": "2026-11-23T16:48:44.773750+00:00",
+  "updated_timestamp": 1795452524,
   "count": 24,
   "prices": {
-    "AAPL": 347.77,
-    "MSTR": 86.8,
+    "AAPL": 348.03,
+    "MSTR": 86.54,
     "PLTR": 157.41,
     "HOOD": 67.43,
-    "HIMS": 15.24,
-    "BABA": 86.31,
-    "MARA": 5.79,
-    "CZR": 29.2,
-    "OSCR": 25.98,
+    "HIMS": 15.22,
+    "BABA": 86.41,
+    "MARA": 5.78,
+    "CZR": 29.19,
+    "OSCR": 26.0,
     "SOFI": 13.24,
     "NVDA": 163.92,
-    "MSFT": 497.83,
-    "TSLA": 388.42,
+    "MSFT": 497.73,
+    "TSLA": 389.49,
     "GOOGL": 281.17,
-    "META": 592.48,
+    "META": 594.31,
     "AMD": 455.67,
-    "INTC": 57.38,
-    "SPY": 720.91,
+    "INTC": 57.33,
+    "SPY": 721.77,
     "QQQ": 649.38,
-    "NFLX": 57.84,
-    "NOW": 91.54,
-    "AMZN": 255.72,
-    "COIN": 109.92,
-    "SMCI": 24.5
+    "NFLX": 57.8,
+    "NOW": 91.72,
+    "AMZN": 255.9,
+    "COIN": 109.8,
+    "SMCI": 24.52
   },
   "details": {
     "AAPL": {
-      "price": 347.77,
+      "price": 348.03,
       "previousClose": 342.56,
-      "change": 5.21,
-      "changePercent": 1.52
+      "change": 5.47,
+      "changePercent": 1.6
     },
     "MSTR": {
-      "price": 86.8,
+      "price": 86.54,
       "previousClose": 77.8,
-      "change": 9.0,
-      "changePercent": 11.57
+      "change": 8.74,
+      "changePercent": 11.23
     },
     "PLTR": {
       "price": 157.41,
@@ -54,34 +54,34 @@
       "changePercent": 8.46
     },
     "HIMS": {
-      "price": 15.24,
+      "price": 15.22,
       "previousClose": 14.6,
-      "change": 0.64,
-      "changePercent": 4.38
+      "change": 0.62,
+      "changePercent": 4.25
     },
     "BABA": {
-      "price": 86.31,
+      "price": 86.41,
       "previousClose": 81.08,
-      "change": 5.23,
-      "changePercent": 6.45
+      "change": 5.33,
+      "changePercent": 6.57
     },
     "MARA": {
-      "price": 5.79,
+      "price": 5.78,
       "previousClose": 5.08,
-      "change": 0.71,
-      "changePercent": 13.98
+      "change": 0.7,
+      "changePercent": 13.78
     },
     "CZR": {
-      "price": 29.2,
+      "price": 29.19,
       "previousClose": 29.06,
-      "change": 0.14,
-      "changePercent": 0.48
+      "change": 0.13,
+      "changePercent": 0.45
     },
     "OSCR": {
-      "price": 25.98,
+      "price": 26.0,
       "previousClose": 24.73,
-      "change": 1.25,
-      "changePercent": 5.05
+      "change": 1.27,
+      "changePercent": 5.14
     },
     "SOFI": {
       "price": 13.24,
@@ -96,16 +96,16 @@
       "changePercent": 30.58
     },
     "MSFT": {
-      "price": 497.83,
+      "price": 497.73,
       "previousClose": 484.52,
-      "change": 13.31,
-      "changePercent": 2.75
+      "change": 13.21,
+      "changePercent": 2.73
     },
     "TSLA": {
-      "price": 388.42,
+      "price": 389.49,
       "previousClose": 345.82,
-      "change": 42.6,
-      "changePercent": 12.32
+      "change": 43.67,
+      "changePercent": 12.63
     },
     "GOOGL": {
       "price": 281.17,
@@ -114,10 +114,10 @@
       "changePercent": 5.99
     },
     "META": {
-      "price": 592.48,
+      "price": 594.31,
       "previousClose": 560.84,
-      "change": 31.64,
-      "changePercent": 5.64
+      "change": 33.47,
+      "changePercent": 5.97
     },
     "AMD": {
       "price": 455.67,
@@ -126,16 +126,16 @@
       "changePercent": 7.37
     },
     "INTC": {
-      "price": 57.38,
+      "price": 57.33,
       "previousClose": 51.28,
-      "change": 6.1,
-      "changePercent": 11.9
+      "change": 6.05,
+      "changePercent": 11.8
     },
     "SPY": {
-      "price": 720.91,
+      "price": 721.77,
       "previousClose": 689.81,
-      "change": 31.1,
-      "changePercent": 4.51
+      "change": 31.96,
+      "changePercent": 4.63
     },
     "QQQ": {
       "price": 649.38,
@@ -144,34 +144,34 @@
       "changePercent": 6.73
     },
     "NFLX": {
-      "price": 57.84,
+      "price": 57.8,
       "previousClose": 56.73,
-      "change": 1.11,
-      "changePercent": 1.96
+      "change": 1.07,
+      "changePercent": 1.89
     },
     "NOW": {
-      "price": 91.54,
+      "price": 91.72,
       "previousClose": 87.61,
-      "change": 3.93,
-      "changePercent": 4.49
+      "change": 4.11,
+      "changePercent": 4.69
     },
     "AMZN": {
-      "price": 255.72,
+      "price": 255.9,
       "previousClose": 246.82,
-      "change": 8.9,
-      "changePercent": 3.61
+      "change": 9.08,
+      "changePercent": 3.68
     },
     "COIN": {
-      "price": 109.92,
+      "price": 109.8,
       "previousClose": 101.97,
-      "change": 7.95,
-      "changePercent": 7.8
+      "change": 7.83,
+      "changePercent": 7.68
     },
     "SMCI": {
-      "price": 24.5,
+      "price": 24.52,
       "previousClose": 21.65,
-      "change": 2.85,
-      "changePercent": 13.16
+      "change": 2.87,
+      "changePercent": 13.26
     }
   }
 }

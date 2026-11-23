@@ -55,7 +55,8 @@ permalink: /stock/
     </div>
     <div style="display: flex; align-items: center; gap: 10px;">
       <div class="apple-badge" id="portfolio-status-badge">
-        <span id="status-text">Updated</span>
+        <span class="status-dot"></span>
+        <span id="status-text">Live</span>
       </div>
       <button class="apple-signout-btn" onclick="signOut()" title="Sign out of Stock Portfolio">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -187,41 +188,51 @@ permalink: /stock/
 // Apple Vibrant Unified Stock Portfolio Logic
 // ============================================================================
 
-// Portfolio dataset with the original positions PLUS SOFI, additional BABA lot, and additional NFLX lot
+// Portfolio dataset with latest baseline market prices
 const DEFAULT_PORTFOLIO = [
-  { id: "p1",  symbol: "MSTR", buyPrice: 350.00, quantity: 100, currentPrice: 77.80 },
-  { id: "p2",  symbol: "MSTR", buyPrice: 250.00, quantity: 100, currentPrice: 77.80 },
-  { id: "p3",  symbol: "PLTR", buyPrice: 185.00, quantity: 200, currentPrice: 143.49 },
-  { id: "p4",  symbol: "HOOD", buyPrice: 115.00, quantity: 100, currentPrice: 62.17 },
-  { id: "p5",  symbol: "HOOD", buyPrice: 125.00, quantity: 200, currentPrice: 62.17 },
-  { id: "p6",  symbol: "HOOD", buyPrice: 130.00, quantity: 200, currentPrice: 62.17 },
-  { id: "p7",  symbol: "HIMS", buyPrice: 45.00,  quantity: 400, currentPrice: 14.60 },
-  { id: "p8",  symbol: "HIMS", buyPrice: 55.00,  quantity: 400, currentPrice: 14.60 },
-  { id: "p9",  symbol: "HIMS", buyPrice: 56.00,  quantity: 200, currentPrice: 14.60 },
-  { id: "p10", symbol: "NFLX", buyPrice: 108.00, quantity: 200, currentPrice: 56.73 },
-  { id: "p11", symbol: "BABA", buyPrice: 110.00, quantity: 200, currentPrice: 81.08 },
-  { id: "p12", symbol: "NOW",  buyPrice: 125.00, quantity: 100, currentPrice: 87.61 },
-  { id: "p13", symbol: "MARA", buyPrice: 24.50,  quantity: 100, currentPrice: 5.09 },
-  { id: "p14", symbol: "CZR",  buyPrice: 26.50,  quantity: 400, currentPrice: 29.06 },
-  { id: "p15", symbol: "OSCR", buyPrice: 20.00,  quantity: 1000, currentPrice: 24.73 },
+  { id: "p1",  symbol: "MSTR", buyPrice: 350.00, quantity: 100, currentPrice: 86.80 },
+  { id: "p2",  symbol: "MSTR", buyPrice: 250.00, quantity: 100, currentPrice: 86.80 },
+  { id: "p3",  symbol: "PLTR", buyPrice: 185.00, quantity: 200, currentPrice: 157.41 },
+  { id: "p4",  symbol: "HOOD", buyPrice: 115.00, quantity: 100, currentPrice: 67.43 },
+  { id: "p5",  symbol: "HOOD", buyPrice: 125.00, quantity: 200, currentPrice: 67.43 },
+  { id: "p6",  symbol: "HOOD", buyPrice: 130.00, quantity: 200, currentPrice: 67.43 },
+  { id: "p7",  symbol: "HIMS", buyPrice: 45.00,  quantity: 400, currentPrice: 15.24 },
+  { id: "p8",  symbol: "HIMS", buyPrice: 55.00,  quantity: 400, currentPrice: 15.24 },
+  { id: "p9",  symbol: "HIMS", buyPrice: 56.00,  quantity: 200, currentPrice: 15.24 },
+  { id: "p10", symbol: "NFLX", buyPrice: 108.00, quantity: 200, currentPrice: 57.84 },
+  { id: "p11", symbol: "BABA", buyPrice: 110.00, quantity: 200, currentPrice: 86.31 },
+  { id: "p12", symbol: "NOW",  buyPrice: 125.00, quantity: 100, currentPrice: 91.54 },
+  { id: "p13", symbol: "MARA", buyPrice: 24.50,  quantity: 100, currentPrice: 5.79 },
+  { id: "p14", symbol: "CZR",  buyPrice: 26.50,  quantity: 400, currentPrice: 29.20 },
+  { id: "p15", symbol: "OSCR", buyPrice: 20.00,  quantity: 1000, currentPrice: 25.98 },
   // Newly added requested positions
-  { id: "p16", symbol: "SOFI", buyPrice: 17.00,  quantity: 1000, currentPrice: 12.48 },
-  { id: "p17", symbol: "BABA", buyPrice: 120.00, quantity: 200,  currentPrice: 81.08 },
-  { id: "p18", symbol: "NFLX", buyPrice: 70.00,  quantity: 200,  currentPrice: 56.73 }
+  { id: "p16", symbol: "SOFI", buyPrice: 17.00,  quantity: 1000, currentPrice: 13.24 },
+  { id: "p17", symbol: "BABA", buyPrice: 120.00, quantity: 200,  currentPrice: 86.31 },
+  { id: "p18", symbol: "NFLX", buyPrice: 70.00,  quantity: 200,  currentPrice: 57.84 }
 ];
 
 // Reference baseline market prices
 const KNOWN_PRICES = {
-  "AAPL": 228.80, "NVDA": 142.30, "MSFT": 424.50, "TSLA": 234.60,
-  "AMZN": 208.20, "GOOGL": 178.50, "GOOG": 179.10, "META": 586.20,
-  "AMD": 138.40, "COIN": 216.50, "SMCI": 28.50, "INTC": 24.30,
-  "SPY": 591.20, "QQQ": 505.80, "MSTR": 77.80, "HOOD": 62.17,
-  "HIMS": 14.60, "PLTR": 143.49, "NFLX": 56.73, "BABA": 81.08,
-  "NOW": 87.61, "MARA": 5.09, "CZR": 29.06, "OSCR": 24.73,
-  "SOFI": 12.48
+  "AAPL": 347.77, "NVDA": 163.92, "MSFT": 497.83, "TSLA": 388.42,
+  "AMZN": 255.72, "GOOGL": 281.17, "GOOG": 281.17, "META": 592.48,
+  "AMD": 455.67, "COIN": 109.92, "SMCI": 24.50, "INTC": 57.38,
+  "SPY": 720.91, "QQQ": 649.38, "MSTR": 86.80, "HOOD": 67.43,
+  "HIMS": 15.24, "PLTR": 157.41, "NFLX": 57.84, "BABA": 86.31,
+  "NOW": 91.54, "MARA": 5.79, "CZR": 29.20, "OSCR": 25.98,
+  "SOFI": 13.24
 };
 
-const STORAGE_KEY = "johan_stock_v5";
+// Endpoints for real-time live data
+const STOCK_DATA_PATH = "{{ '/assets/data/stock-prices.json' | relative_url }}";
+const STOCK_API_PATH = "{{ '/api/stock-prices' | relative_url }}";
+const STOCK_WORKER_PATH = "{{ '/assets/js/stock-timer-worker.js' | relative_url }}";
+
+let lastFetchTimestamp = 0;
+let isFetchingPrices = false;
+let timerWorkerInstance = null;
+let fallbackIntervalTimer = null;
+
+const STORAGE_KEY = "johan_stock_v6";
 
 let portfolio = [];
 let expandedSymbols = new Set();
@@ -281,9 +292,17 @@ function formatNumber(val) {
 // Load / Save State
 function loadState() {
   try {
-    const saved = localStorage.getItem(STORAGE_KEY);
+    const saved = localStorage.getItem(STORAGE_KEY) || localStorage.getItem("johan_stock_v5");
     if (saved) {
       portfolio = JSON.parse(saved);
+      // Ensure all positions immediately reflect fresh KNOWN_PRICES on initial render
+      portfolio.forEach((pos) => {
+        const sym = (pos.symbol || "").trim().toUpperCase();
+        if (KNOWN_PRICES[sym] && KNOWN_PRICES[sym] > 0) {
+          pos.currentPrice = KNOWN_PRICES[sym];
+        }
+      });
+      saveState();
     } else {
       portfolio = JSON.parse(JSON.stringify(DEFAULT_PORTFOLIO));
       saveState();
@@ -1122,7 +1141,137 @@ function handleLoginSubmit(event) {
   }
 }
 
+// ============================================================================
+// Automated 2-Minute Background Price Fetcher & Web Worker
+// ============================================================================
+async function fetchLatestPrices(isSilent = false) {
+  if (isFetchingPrices) return;
+  isFetchingPrices = true;
+
+  const statusText = document.getElementById("status-text");
+  if (statusText && !isSilent) {
+    statusText.textContent = "Updating...";
+  }
+
+  try {
+    let prices = null;
+
+    // 1. Try Cloudflare Worker / edge API route if deployed
+    try {
+      const apiResp = await fetch(STOCK_API_PATH, { cache: "no-store" });
+      if (apiResp.ok) {
+        const apiData = await apiResp.json();
+        if (apiData && apiData.prices && Object.keys(apiData.prices).length > 0) {
+          prices = apiData.prices;
+        }
+      }
+    } catch (err) {
+      // API route not active, proceed to static data fallback
+    }
+
+    // 2. Fallback to static stock-prices.json updated by GitHub Action
+    if (!prices) {
+      const bustUrl = `${STOCK_DATA_PATH}?_t=${Date.now()}`;
+      const dataResp = await fetch(bustUrl, { cache: "no-store" });
+      if (dataResp.ok) {
+        const data = await dataResp.json();
+        if (data && data.prices && Object.keys(data.prices).length > 0) {
+          prices = data.prices;
+        }
+      }
+    }
+
+    if (prices) {
+      lastFetchTimestamp = Date.now();
+
+      // Merge into KNOWN_PRICES
+      for (const [sym, priceVal] of Object.entries(prices)) {
+        const num = parseFloat(priceVal);
+        if (!isNaN(num) && num > 0) {
+          KNOWN_PRICES[sym.toUpperCase()] = num;
+        }
+      }
+
+      // Update currentPrice across active portfolio positions
+      let updatedCount = 0;
+      portfolio.forEach((pos) => {
+        const sym = (pos.symbol || "").trim().toUpperCase();
+        if (KNOWN_PRICES[sym] && KNOWN_PRICES[sym] > 0) {
+          if (pos.currentPrice !== KNOWN_PRICES[sym]) {
+            pos.currentPrice = KNOWN_PRICES[sym];
+            updatedCount++;
+          }
+        }
+      });
+
+      saveState();
+      renderTable();
+
+      const timeStr = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      if (statusText) {
+        statusText.textContent = `Live • ${timeStr}`;
+      }
+    } else {
+      if (statusText) statusText.textContent = "Live";
+    }
+  } catch (e) {
+    console.warn("Background stock price fetch error:", e);
+    if (statusText) statusText.textContent = "Offline Mode";
+  } finally {
+    isFetchingPrices = false;
+  }
+}
+
+function startAutoRefresh() {
+  stopAutoRefresh();
+
+  // 1. Web Worker for background 2-minute ticks (prevents browser tab throttling)
+  try {
+    timerWorkerInstance = new Worker(STOCK_WORKER_PATH);
+    timerWorkerInstance.onmessage = function (e) {
+      if (e.data && e.data.type === "tick") {
+        fetchLatestPrices(true);
+      }
+    };
+    timerWorkerInstance.postMessage("start");
+  } catch (err) {
+    console.info("Web Worker not supported or restricted, falling back to setInterval:", err);
+    fallbackIntervalTimer = setInterval(() => {
+      fetchLatestPrices(true);
+    }, 2 * 60 * 1000); // exactly 2 minutes
+  }
+
+  // 2. Tab visibility listener: if user returns to tab after 2+ minutes, refresh immediately
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
+  document.addEventListener("visibilitychange", handleVisibilityChange);
+}
+
+function handleVisibilityChange() {
+  if (document.visibilityState === "visible") {
+    const elapsed = Date.now() - lastFetchTimestamp;
+    if (elapsed >= 2 * 60 * 1000) {
+      fetchLatestPrices(true);
+    }
+  }
+}
+
+function stopAutoRefresh() {
+  if (timerWorkerInstance) {
+    try {
+      timerWorkerInstance.postMessage("stop");
+      timerWorkerInstance.terminate();
+    } catch (e) {}
+    timerWorkerInstance = null;
+  }
+  if (fallbackIntervalTimer) {
+    clearInterval(fallbackIntervalTimer);
+    fallbackIntervalTimer = null;
+  }
+  document.removeEventListener("visibilitychange", handleVisibilityChange);
+}
+
 function signOut() {
+  stopAutoRefresh();
   localStorage.removeItem(AUTH_KEY);
   checkAuth();
 }
@@ -1137,7 +1286,10 @@ function checkAuth() {
     if (mainSection) mainSection.style.display = "block";
     loadState();
     renderTable();
+    fetchLatestPrices(false); // Fetch live prices immediately on load
+    startAutoRefresh();       // Background 2-minute recurring fetch
   } else {
+    stopAutoRefresh();
     if (mainSection) mainSection.style.display = "none";
     if (authSection) authSection.style.display = "flex";
     renderLoginForm();

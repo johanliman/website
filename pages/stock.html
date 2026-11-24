@@ -33,6 +33,48 @@ permalink: /stock/
   .avg-down-subtitle {
     text-align: left !important;
   }
+  /* Mobile drag / horizontal scroll support */
+  .stock-table-card {
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: pan-x pan-y !important;
+    overscroll-behavior-x: contain;
+  }
+  .stock-table-card.is-draggable {
+    cursor: grab;
+  }
+  .stock-table-card.is-dragging {
+    cursor: grabbing !important;
+    user-select: none !important;
+  }
+  .stock-table-card.is-dragging * {
+    user-select: none !important;
+    pointer-events: none !important;
+  }
+  .stock-table {
+    min-width: 780px !important;
+  }
+  .stock-table th,
+  .stock-table td {
+    white-space: nowrap !important;
+  }
+  .stock-detail-cell {
+    white-space: normal !important;
+  }
+  .stock-table-card::-webkit-scrollbar {
+    height: 6px;
+  }
+  .stock-table-card::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .stock-table-card::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 980px;
+  }
+  .stock-table-card::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
+  }
 </style>
 
 <!-- Chart.js CDN for Colorful Pie Chart -->
@@ -1268,6 +1310,60 @@ function stopAutoRefresh() {
   document.removeEventListener("visibilitychange", handleVisibilityChange);
 }
 
+function initTableDragScroll() {
+  const slider = document.querySelector(".stock-table-card");
+  if (!slider || slider.dataset.dragInit) return;
+  slider.dataset.dragInit = "true";
+  slider.classList.add("is-draggable");
+
+  let isDown = false;
+  let startX = 0;
+  let scrollLeft = 0;
+  let hasMoved = false;
+
+  slider.addEventListener("mousedown", (e) => {
+    if (e.button !== 0) return;
+    if (e.target.closest("input, button, select, textarea, .editable-cell")) return;
+
+    isDown = true;
+    hasMoved = false;
+    startX = e.pageX - slider.offsetLeft;
+    scrollLeft = slider.scrollLeft;
+  });
+
+  window.addEventListener("mousemove", (e) => {
+    if (!isDown) return;
+    const x = e.pageX - slider.offsetLeft;
+    const walk = x - startX;
+    if (Math.abs(walk) > 4) {
+      if (!hasMoved) {
+        hasMoved = true;
+        slider.classList.add("is-dragging");
+      }
+      slider.scrollLeft = scrollLeft - walk;
+    }
+  });
+
+  const stopDrag = () => {
+    if (!isDown) return;
+    isDown = false;
+    setTimeout(() => {
+      slider.classList.remove("is-dragging");
+    }, 50);
+  };
+
+  window.addEventListener("mouseup", stopDrag);
+
+  // Prevent accidental row expansion click if the user was dragging
+  slider.addEventListener("click", (e) => {
+    if (hasMoved) {
+      e.stopPropagation();
+      e.preventDefault();
+      hasMoved = false;
+    }
+  }, true);
+}
+
 function signOut() {
   stopAutoRefresh();
   localStorage.removeItem(AUTH_KEY);
@@ -1284,6 +1380,7 @@ function checkAuth() {
     if (mainSection) mainSection.style.display = "block";
     loadState();
     renderTable();
+    initTableDragScroll();
     fetchLatestPrices(false); // Fetch live prices immediately on load
     startAutoRefresh();       // Background 2-minute recurring fetch
   } else {
@@ -1300,5 +1397,6 @@ window.addEventListener("DOMContentLoaded", () => {
   if (wrapper) wrapper.style.maxWidth = "1200px";
 
   checkAuth();
+  initTableDragScroll();
 });
 </script>

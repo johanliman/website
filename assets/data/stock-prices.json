@@ -1,6 +1,6 @@
 {
-  "updated_at": "2026-11-26T05:31:01.257625+00:00",
-  "updated_timestamp": 1795671061,
+  "updated_at": "2026-11-26T15:37:55.631763+00:00",
+  "updated_timestamp": 1795707475,
   "count": 24,
   "prices": {
     "AAPL": 355.58,
@@ -15,7 +15,7 @@
     "SOFI": 13.07,
     "NVDA": 149.3,
     "MSFT": 489.93,
-    "TSLA": 384.68,
+    "TSLA": 380.14,
     "GOOGL": 273.1,
     "META": 609.89,
     "AMD": 406.03,
@@ -102,10 +102,10 @@
       "changePercent": -1.25
     },
     "TSLA": {
-      "price": 384.68,
-      "previousClose": 385.46,
-      "change": -0.78,
-      "changePercent": -0.2
+      "price": 380.14,
+      "previousClose": 384.68,
+      "change": -4.54,
+      "changePercent": -1.18
     },
     "GOOGL": {
       "price": 273.1,

@@ -1,24 +1,24 @@
 {
-  "updated_at": "2026-11-25T23:49:50.959603+00:00",
-  "updated_timestamp": 1795650590,
+  "updated_at": "2026-11-26T05:31:01.257625+00:00",
+  "updated_timestamp": 1795671061,
   "count": 24,
   "prices": {
     "AAPL": 355.58,
     "MSTR": 79.96,
     "PLTR": 163.59,
-    "HOOD": 62.22,
+    "HOOD": 65.78,
     "HIMS": 14.65,
     "BABA": 86.26,
     "MARA": 5.42,
     "CZR": 29.26,
-    "OSCR": 25.71,
+    "OSCR": 27.12,
     "SOFI": 13.07,
-    "NVDA": 142.85,
-    "MSFT": 496.13,
+    "NVDA": 149.3,
+    "MSFT": 489.93,
     "TSLA": 384.68,
-    "GOOGL": 265.19,
+    "GOOGL": 273.1,
     "META": 609.89,
-    "AMD": 377.16,
+    "AMD": 406.03,
     "INTC": 54.47,
     "SPY": 716.7,
     "QQQ": 633.93,
@@ -48,10 +48,10 @@
       "changePercent": 1.5
     },
     "HOOD": {
-      "price": 62.22,
+      "price": 65.78,
       "previousClose": 65.65,
-      "change": -3.43,
-      "changePercent": -5.22
+      "change": 0.13,
+      "changePercent": 0.2
     },
     "HIMS": {
       "price": 14.65,
@@ -78,10 +78,10 @@
       "changePercent": 0.0
     },
     "OSCR": {
-      "price": 25.71,
+      "price": 27.12,
       "previousClose": 26.06,
-      "change": -0.35,
-      "changePercent": -1.34
+      "change": 1.06,
+      "changePercent": 4.07
     },
     "SOFI": {
       "price": 13.07,
@@ -90,16 +90,16 @@
       "changePercent": 1.63
     },
     "NVDA": {
-      "price": 142.85,
+      "price": 149.3,
       "previousClose": 155.38,
-      "change": -12.53,
-      "changePercent": -8.06
+      "change": -6.08,
+      "changePercent": -3.91
     },
     "MSFT": {
-      "price": 496.13,
-      "previousClose": 492.5,
-      "change": 3.63,
-      "changePercent": 0.74
+      "price": 489.93,
+      "previousClose": 496.13,
+      "change": -6.2,
+      "changePercent": -1.25
     },
     "TSLA": {
       "price": 384.68,
@@ -108,10 +108,10 @@
       "changePercent": -0.2
     },
     "GOOGL": {
-      "price": 265.19,
+      "price": 273.1,
       "previousClose": 279.05,
-      "change": -13.86,
-      "changePercent": -4.97
+      "change": -5.95,
+      "changePercent": -2.13
     },
     "META": {
       "price": 609.89,
@@ -120,10 +120,10 @@
       "changePercent": 3.4
     },
     "AMD": {
-      "price": 377.16,
+      "price": 406.03,
       "previousClose": 413.27,
-      "change": -36.11,
-      "changePercent": -8.74
+      "change": -7.24,
+      "changePercent": -1.75
     },
     "INTC": {
       "price": 54.47,

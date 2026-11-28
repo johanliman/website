@@ -1,18 +1,18 @@
 {
-  "updated_at": "2026-11-28T00:23:26.417536+00:00",
-  "updated_timestamp": 1795825406,
+  "updated_at": "2026-11-28T08:07:29.549803+00:00",
+  "updated_timestamp": 1795853249,
   "count": 24,
   "prices": {
-    "AAPL": 357.97,
+    "AAPL": 358.54,
     "MSTR": 81.62,
     "PLTR": 172.17,
     "HOOD": 67.92,
     "HIMS": 15.0,
-    "BABA": 90.11,
+    "BABA": 89.68,
     "MARA": 5.59,
-    "CZR": 29.41,
+    "CZR": 29.39,
     "OSCR": 27.06,
-    "SOFI": 13.07,
+    "SOFI": 13.37,
     "NVDA": 148.81,
     "MSFT": 492.85,
     "TSLA": 400.0,
@@ -30,10 +30,10 @@
   },
   "details": {
     "AAPL": {
-      "price": 357.97,
+      "price": 358.54,
       "previousClose": 355.58,
-      "change": 2.39,
-      "changePercent": 0.67
+      "change": 2.96,
+      "changePercent": 0.83
     },
     "MSTR": {
       "price": 81.62,
@@ -60,10 +60,10 @@
       "changePercent": 2.39
     },
     "BABA": {
-      "price": 90.11,
+      "price": 89.68,
       "previousClose": 86.26,
-      "change": 3.85,
-      "changePercent": 4.46
+      "change": 3.42,
+      "changePercent": 3.96
     },
     "MARA": {
       "price": 5.59,
@@ -72,10 +72,10 @@
       "changePercent": 3.14
     },
     "CZR": {
-      "price": 29.41,
+      "price": 29.39,
       "previousClose": 29.26,
-      "change": 0.15,
-      "changePercent": 0.51
+      "change": 0.13,
+      "changePercent": 0.44
     },
     "OSCR": {
       "price": 27.06,
@@ -84,10 +84,10 @@
       "changePercent": -0.22
     },
     "SOFI": {
-      "price": 13.07,
-      "previousClose": 12.86,
-      "change": 0.21,
-      "changePercent": 1.63
+      "price": 13.37,
+      "previousClose": 13.07,
+      "change": 0.3,
+      "changePercent": 2.3
     },
     "NVDA": {
       "price": 148.81,
